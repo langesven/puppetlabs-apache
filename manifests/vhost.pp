@@ -206,6 +206,7 @@ define apache::vhost(
   Optional[String] $shib_compat_valid_user                                          = undef,
   Optional[Enum['On', 'on', 'Off', 'off', 'DNS', 'dns']] $use_canonical_name        = undef,
   Optional[Variant[String,Array[String]]] $comment                                  = undef,
+  Boolean $vhost_enable                                                             = true,
 ) {
 
   # The base class must be included first because it is used by parameter defaults
@@ -532,7 +533,7 @@ define apache::vhost(
   }
   # NOTE(pabelanger): This code is duplicated in ::apache::vhost::custom and
   # needs to be converted into something generic.
-  if $::apache::vhost_enable_dir {
+  if $vhost_enable and $::apache::vhost_enable_dir {
     $vhost_enable_dir = $::apache::vhost_enable_dir
     $vhost_symlink_ensure = $ensure ? {
       present => link,
